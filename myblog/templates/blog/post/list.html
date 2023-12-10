@@ -11,6 +11,7 @@
             {{ post.publish }} by {{ post.author }}
         </p>
         {{ post.body|truncatewords:30|linebreaks }}
+        <a href={% url 'blog:post_share' post.id %}>Прокоментрировать пост {{post.author}}</a>
     {% endfor %}
-    {% include "../pagination.html" with page=posts %}
+    {% include "../pagination.html" with page=page_obj %}
 {% endblock %}
