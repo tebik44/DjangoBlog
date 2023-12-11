@@ -5,14 +5,15 @@ from .models import Post
 from django.http import Http404, HttpResponseBadRequest, HttpResponse
 from django.core.paginator import Paginator
 from django.views.generic import ListView
-
-from .forms import EmailPostForm
-
+from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 from django.conf import settings
 
+from .forms import EmailPostForm, CommentForm
+
 
 def post_detail(request, year, month, day, slug):
+    """работа с отображением деталей поста"""
     # post = get_object_or_404(Post, id=id,
     #                          status=Post.Status.PUBLISHED)
     try:
@@ -20,13 +21,18 @@ def post_detail(request, year, month, day, slug):
                                   publish__month=month, 
                                   publish__day=day, 
                                   slug=slug)
+        comments = post.comments.filter(active=True)
+        form = CommentForm()
     except Post.DoesNotExist as er:
         return HttpResponseBadRequest(er)
     return render(request, 'blog/post/detail.html',
-                  {'post': post})
+                  {'post': post,
+                   'comments': comments,
+                   'form': form})
 
 
 def post_share(request, post_id):
+    """работа с отправкой на почту"""
     post = get_object_or_404(Post, id=post_id,
                              status=Post.Status.PUBLISHED)
     sent = False
@@ -63,10 +69,28 @@ def post_share(request, post_id):
 
 # сверху пример того, как можно написать без использования представления, логика та же самая
 class PostListView(ListView):
+    """Вывод всех постов на главную"""
     queryset = Post.published.all()
     context_object_name = 'posts'
     paginate_by = 1
     template_name = 'blog/post/list.html'
-    
+
+
+@require_POST
+def post_comment(request, post_id):
+    """Работа с коментраием"""
+    post = get_object_or_404(Post, 
+                             id=post_id, 
+                             status=Post.Status.PUBLISHED)
+    comment = None
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    return render(request, 'blog/post/comment.html',
+                  {'post': post,
+                   'form': form,
+                   'comment': comment})
     
     
