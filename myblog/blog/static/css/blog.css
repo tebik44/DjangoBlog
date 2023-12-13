@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: helvetica, sans-serif;
+    background-color: rgb(59, 26, 49);
 }
 
 a {
@@ -9,15 +10,21 @@ a {
     text-decoration: none;
 }
 
+p {
+    color:rgb(255, 255, 255);
+}
+
 h1 {
     font-weight: normal;
     border-bottom: 1px solid #bbb;
     padding: 0 0 10px 0;
+    color: rgb(199, 25, 25);
 }
 
 h2 {
     font-weight: normal;
     margin: 30px 0 0;
+    color: rgb(199, 25, 25);
 }
 
 #content {
@@ -45,6 +52,7 @@ p.date {
 .pagination {
     margin: 40px 0;
     font-weight: bold;
+    color: #efefef;
 }
 
 /* forms */
