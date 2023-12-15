@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'blog',
     'taggit',
+    'accounts.apps.AccountsConfig',
 ]
+
+LOGIN_REDIRECT_URL = "blog:post_list"
+LOGOUT_REDIRECT_URL = "/accounts/login"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

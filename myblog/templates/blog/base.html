@@ -18,6 +18,14 @@
     <p>Blog
         I've written {% total_posts %} posts so far.
     </p>
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        <p><a href="{% url 'logout' %}">Log Out</a></p>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+
 
     <h3>Latest posts</h3>
     {% show_latest_posts 2 %}
