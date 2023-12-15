@@ -69,6 +69,7 @@ def post_share(request, post_id):
 
 
 def post_list(request, tag_slug=None):
+    """вывод на главную страницу постов"""
     post_list = Post.published.all()
 
     tag = None
@@ -76,7 +77,7 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         post_list = post_list.filter(tags__in=[tag])
 
-    paginator = Paginator(post_list, 1)
+    paginator = Paginator(post_list, 2)
     page_number = request.GET.get('page', 1)
     try:
         posts = paginator.page(page_number)
