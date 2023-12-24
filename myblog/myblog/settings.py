@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'taggit',
     'accounts.apps.AccountsConfig',
     'social_django',
+    'django_bootstrap5',
+    'markdown',
 ]
 
 LOGIN_REDIRECT_URL = "blog:post_list"
